@@ -1,6 +1,10 @@
-require "gravedigger/version"
+require "thor"
+require "rubygems"
 
 module Gravedigger
-  class Error < StandardError; end
-  # Your code goes here...
+  class CLI < Thor
+    desc "dig", "Find unused code in your Rails project"
+    def dig
+    end
+  end
 end

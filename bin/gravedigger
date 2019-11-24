@@ -1,0 +1,8 @@
+#!/usr/bin/env ruby 
+require 'rubygems'
+
+$LOAD_PATH << File.expand_path('lib')
+
+load 'gravedigger.rb'
+
+Gravedigger::CLI.start(ARGV)
