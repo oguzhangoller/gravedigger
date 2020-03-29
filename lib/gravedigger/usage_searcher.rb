@@ -31,8 +31,9 @@ module Gravedigger
             variable_usage_matchs = line.scan(/[ \(\{\[\=\,\+\*\-\/\:]+([A-Za-z0-9\_\-\?\!\@]+)/)
             variable_usage_matchs.each do |variable_usage_match|
               next unless variable_usage_match
-              if variable_definitions[variable_usage_match.first] != "[#{fileName}:#{index+1}]"
-                variable_definitions.delete(variable_usage_match.first)
+              variable_usage = extract_variable_usage(variable_usage_match)
+              if variable_definitions[variable_usage] != "[#{fileName}:#{index+1}]"
+                variable_definitions.delete(variable_usage)
               end
               
             end
@@ -44,6 +45,13 @@ module Gravedigger
       end
 
       return variable_definitions, errors
+    end
+
+    def self.extract_variable_usage(variable_usage_match)
+      variable_usage = variable_usage_match.first
+      variable_usage.sub!(/[@!]/, '')  # remove ! and @ characters from string
+
+      variable_usage
     end
   end
 end
