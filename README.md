@@ -22,7 +22,9 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Simply run on project folder
+
+    $ gravedigger dig
 
 ## Development
 
