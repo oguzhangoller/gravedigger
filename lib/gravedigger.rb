@@ -9,12 +9,16 @@ module Gravedigger
     desc "dig", "Find unused code in your Rails project"
 
     def dig
-      method_definitions, get_definitions_errors = Gravedigger::DefinitionFinder.get_definitions
-      output, method_search_errors = Gravedigger::UsageSearcher.search_methods(method_definitions)
+      files_to_search = Dir[File.join(Dir.pwd,"/{app,lib,config}/**/*.{erb,haml,rb}")]
+      method_definitions, variable_definitions, definition_errors = Gravedigger::DefinitionFinder.get_definitions(files_to_search)
 
-      errors = get_definitions_errors.concat method_search_errors
+      unused_methods, method_search_errors = Gravedigger::UsageSearcher.search_methods(method_definitions, files_to_search)
+      unused_variables, variable_search_errors = Gravedigger::UsageSearcher.search_variables(variable_definitions, files_to_search)
 
-      Gravedigger::OutputPrinter.print_output(output, errors)
+      errors = definition_errors.concat method_search_errors
+      errors = errors.concat variable_search_errors
+
+      Gravedigger::OutputPrinter.print_output(unused_methods, unused_variables, errors)
     end
   end
 end
